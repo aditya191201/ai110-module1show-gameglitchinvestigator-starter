@@ -56,7 +56,7 @@ It wrote the code, ran away, and now the game is unplayable.
 
 ### ✅ pytest — 15 passed (Challenge 1: Advanced Edge-Case Testing)
 
-![pytest results showing 15 passed](Screenshot%202026-03-16%20at%2010.02.59%20AM.png)
+![pytest results showing 15 passed](pytest-passing.png)
 
 ## 🚀 Stretch Features
 
