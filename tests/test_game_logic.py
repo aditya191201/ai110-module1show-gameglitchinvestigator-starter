@@ -1,4 +1,4 @@
-from logic_utils import check_guess, update_score, get_range_for_difficulty
+from logic_utils import check_guess, update_score, get_range_for_difficulty, parse_guess
 
 def test_winning_guess():
     outcome, _ = check_guess(50, 50)
@@ -41,3 +41,34 @@ def test_wrong_guess_never_adds_points():
 def test_wrong_guess_subtracts_points():
     assert update_score(100, "Too High", 2) == 95
     assert update_score(100, "Too Low", 3) == 95
+
+# Edge case 1: negative numbers are parsed as valid integers but fall outside the game range
+def test_negative_number_parses_successfully():
+    ok, value, err = parse_guess("-5")
+    assert ok is True
+    assert value == -5  # documents that no range guard exists in parse_guess
+
+def test_negative_number_is_too_low():
+    outcome, _ = check_guess(-5, 50)
+    assert outcome == "Too Low", "A negative guess should always be Too Low for any positive secret"
+
+# Edge case 2: extremely large numbers are accepted and compared numerically
+def test_extremely_large_number_parses_successfully():
+    ok, value, err = parse_guess("999999")
+    assert ok is True
+    assert value == 999999  # documents that no upper bound guard exists
+
+def test_extremely_large_number_is_too_high():
+    outcome, _ = check_guess(999999, 50)
+    assert outcome == "Too High", "An enormous guess should always be Too High"
+
+# Edge case 3: decimals are silently truncated toward zero, not rounded
+def test_decimal_truncates_down():
+    ok, value, err = parse_guess("7.9")
+    assert ok is True
+    assert value == 7, "7.9 should truncate to 7, not round to 8"
+
+def test_decimal_truncates_negative():
+    ok, value, err = parse_guess("-2.9")
+    assert ok is True
+    assert value == -2, "-2.9 should truncate to -2 via int(float()), not -3"

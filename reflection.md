@@ -30,15 +30,16 @@ Claude helped design the regression tests for Bug 2. I described what the functi
 
 ## 4. What did you learn about Streamlit and state?
 
-- In your own words, explain why the secret number kept changing in the original app.
-- How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
-- What change did you make that finally gave the game a stable secret number?
+The secret number kept changing because every time the player clicked a button, Streamlit re-ran the entire script from top to bottom. The line that called random.randint had no guard around it, so a fresh random number was picked on every single rerun. This made the game impossible to win because the target was moving on every guess.
+
+Streamlit reruns work like this: imagine every button click refreshes the whole page and re-executes every line of Python. Session state is a small dictionary that survives those refreshes. Anything you put in st.session_state sticks around between reruns, while regular variables just get recreated from scratch each time. The fix was wrapping the secret generation in an if "secret" not in st.session_state check so a new number only gets picked when the game is genuinely starting fresh, not on every button press.
 
 ---
 
 ## 5. Looking ahead: your developer habits
 
-- What is one habit or strategy from this project that you want to reuse in future labs or projects?
-  - This could be a testing habit, a prompting strategy, or a way you used Git.
-- What is one thing you would do differently next time you work with AI on a coding task?
-- In one or two sentences, describe how this project changed the way you think about AI generated code.
+The habit I want to carry forward is writing regression tests immediately after fixing a bug, before moving on. On this project I wrote pytest cases for Bug 2 right after fixing it and they instantly caught that the first fix was incomplete because the TypeError fallback still had the wrong messages. Without those tests I would have shipped a half-fixed function and only discovered the problem later when someone guessed a non-integer value.
+
+Next time I work with AI on a coding task I would read every changed function in full before marking it done, not just the lines the AI highlighted. The incomplete Bug 2 fix looked correct in the diff view because the diff only showed the lines that changed. The bug was in the lines that were not changed. Scanning the whole function takes thirty seconds and would have caught it immediately.
+
+This project changed how I think about AI generated code by showing me that AI can be confidently wrong in ways that are hard to spot. The original game looked like reasonable Python, all the variable names made sense, the structure was clean, and the comments were accurate. But the behavior was broken in eight different ways. Going forward I will treat AI output the same way I treat code from a junior developer: review it, test it, and verify the edge cases before trusting it.
