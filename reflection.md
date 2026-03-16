@@ -4,9 +4,7 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 
 ## 1. What was broken when you started?
 
-- What did the game look like the first time you ran it?
-- List at least two concrete bugs you noticed at the start  
-  (for example: "the secret number kept changing" or "the hints were backwards").
+When I first opened the game it looked like a normal number guessing game, but almost everything was quietly wrong. The most obvious problem was that the hints were backwards. I guessed 50 when the secret was 38, and the game told me to go higher. I also noticed that before I had even made a single guess, the counter already showed one attempt used. Clicking "New Game" after finishing a round completely froze the game and made it impossible to submit another guess. On top of that, Hard difficulty was actually easier than Normal because it used a smaller number range, and the game would sometimes give you points for guessing incorrectly.
 
 ---
 
