@@ -1,5 +1,6 @@
 import random
 import streamlit as st
+# FIX: Refactored game logic (check_guess, parse_guess, etc.) into logic_utils.py with Claude Code — keeps UI and logic separate
 from logic_utils import get_range_for_difficulty, parse_guess, check_guess, update_score
 
 st.set_page_config(page_title="Glitchy Guesser", page_icon="🎮")
@@ -30,6 +31,7 @@ st.sidebar.caption(f"Attempts allowed: {attempt_limit}")
 if "secret" not in st.session_state:
     st.session_state.secret = random.randint(low, high)
 
+# FIX (Bug 1): Changed initial attempts from 1 to 0 with Claude Code — counter was off-by-one, showing 7 attempts left before any guess
 if "attempts" not in st.session_state:
     st.session_state.attempts = 0
 
