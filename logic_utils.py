@@ -4,8 +4,9 @@ def get_range_for_difficulty(difficulty: str):
         return 1, 20
     if difficulty == "Normal":
         return 1, 100
+    # FIX (Bug 5): Hard was 1-50, making it easier than Normal (1-100) — changed to 1-200 with Claude Code
     if difficulty == "Hard":
-        return 1, 50
+        return 1, 200
     return 1, 100
 
 
@@ -64,9 +65,8 @@ def update_score(current_score: int, outcome: str, attempt_number: int):
             points = 10
         return current_score + points
 
+    # FIX (Bug 7): Even-numbered wrong guesses were adding points instead of subtracting — removed the +5 branch with Claude Code
     if outcome == "Too High":
-        if attempt_number % 2 == 0:
-            return current_score + 5
         return current_score - 5
 
     if outcome == "Too Low":
